@@ -1,6 +1,7 @@
 # ddogra1_clo835-lab1
 Lab1 for CLO835
 	
+	
 Readme  Steps  to implement :
 	
 1)	Create three S3 bucket :ddogra1-clo835-labs 
@@ -20,9 +21,7 @@ Readme  Steps  to implement :
     variable "iam_instance_profile_name" 
 	present at location : ddogra1_clo835-lab1/terraform_code/instance/variables.tf
 	
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------	
-
-5)#After that you need to deploy infrastructure in sequential order
+5) After that you need to deploy infrastructure in sequential order
    use commands at all the below given location: ddogra1_clo835-lab1/terraform_code/instance/
 	terraform init
 	terraform fmt
@@ -30,64 +29,67 @@ Readme  Steps  to implement :
 	terraform plan
 	terraform --auto-approve
 
-     "Here take a note of the output having the  Public IP address named as "DevInstance" which is needed for testing and validation"	
+    Take a note of the output having the  Public IP address named as "DevInstance" which is needed for testing and validation
 	   
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+TESTING
+
 6)  Once infrastructure is in place and AWS ECR is created.
 
-a)  Make some changes to git and merge with main branch , it will trigger the workflow to push the docker images to aws ECR.
+	a)  Make some changes to git and merge with main branch , it will trigger the workflow to push the docker images to aws ECR.
 
-b) Once the docker images are pushed to ECR,  You can connect to the created EC2 instance using the ssh
-	location:  ddogra1_clo835-lab1/terraform_code/instance/
-	command : ssh -i lab1-dev ec2-user@<DevInstance>     (You will get the IP address from the output of terraform deployment)
+	b) Once the docker images are pushed to ECR,  You can connect to the created EC2 instance using the ssh
+		location:  ddogra1_clo835-lab1/terraform_code/instance/
+		command : ssh -i lab1-dev ec2-user@<DevInstance>     (You will get the IP address from the output of terraform deployment)
 
-c) login to the ECR use the below commands 
+	c) login to the ECR use the below commands 
 
-export ECR= "<Paste the ECR uri taken from the portal or from command "aws ecr describe-repositories" >
+		export ECR= "<Paste the ECR uri taken from the portal or from command "aws ecr describe-repositories" >
 
-docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) ${ECR}
+		docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) ${ECR}
    
-d)  Pull and Create the docker images 
+	d)  Pull and Create the docker images 
 
+		docker pull  <URI (copy the docker images uri from aws ECR  with the images)>
 
-docker pull  <URI (copy the docker images uri from aws ECR  with the images)>
+		docker run -d -p 8080:80 --name  cats <docker cats image uri>
+		docker run -d -p 8081:80 --name  dogs <docker dogs image uri>
 
-docker run -d -p 8080:80 --name  cats <docker cats image uri>
-docker run -d -p 8081:80 --name  dogs <docker dogs image uri>
-
-e) Validate them to using the web browser 
+	e) Validate them to using the web browser 
    
    
-f) To create the ping capability between the containers use the below commmands
+	f) To create the ping capability between the containers use the below commmands
 
-From the Host machine : 
-docker network create mynet
+		From the Host machine : 
+		docker network create mynet
 
-#After that connect your containers to the network:
-docker network connect mynet cats
-docker network connect mynet dogs
+		#After that connect your containers to the network:
+		docker network connect mynet cats
+		docker network connect mynet dogs
 
-#Check if your containers are part of the new network:
-docker network inspect mynet
+		#Check if your containers are part of the new network:
+		docker network inspect mynet
 
-docker exec -ti cats bash
-	From the Container: 
-		apt-get update
-		apt-get install iputils-ping
-		ping  dogs 
-		exit
+		docker exec -ti cats bash
+			From the Container: 
+				apt-get update
+				apt-get install iputils-ping
+				ping  dogs 
+				exit
 
-docker exec -ti dogs bash
-	From the Container: 
-		apt-get update
-		apt-get install iputils-ping
-		ping  cats
-		exit
+		docker exec -ti dogs bash
+			From the Container: 
+				apt-get update
+				apt-get install iputils-ping
+				ping  cats
+				exit
 
-docker exec -ti cats ping dog
-
-
+		docker exec -ti cats ping dog
   
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-#To destroy the infrastructure use the reverse order from above 
-(use command: terraform destroy --auto-approve ) at all the below location: ddogra1_clo835-lab1/terraform_code/instance/
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CLEAN UP
+
+	#To destroy the infrastructure use the reverse order from above 
+	  (use command: terraform destroy --auto-approve ) at all the below location: ddogra1_clo835-lab1/terraform_code/instance/
