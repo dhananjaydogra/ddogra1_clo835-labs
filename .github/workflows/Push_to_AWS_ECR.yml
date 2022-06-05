@@ -36,7 +36,7 @@ jobs:
         
       run: |
         #### Build a docker container for Cats  push it to ECR
-        cd cats/
+        cd docker/cats/
         ls -ltra
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA .
         ### Build a docker container for Dogs
