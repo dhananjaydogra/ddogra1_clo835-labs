@@ -17,6 +17,13 @@ variable "env" {
   description = "Deployment Environment"
 }
 
+# Variable for the IAM Role that needs to have access to AWS ECR 
+variable "iam_instance_profile_name" {
+  default     = "EMR_EC2_DefaultRole"
+  type        = string
+  description = "IAM Role Name that will be used"
+}
+
 
 
 
