@@ -1,0 +1,61 @@
+# 1. Push Docker images to an ECR repository
+
+name: Push to Amazon ECR
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  
+  build:
+    name: Build the Docker Image
+    runs-on: ubuntu-latest
+   #environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}             # set this to your AWS_ACCESS_KEY_ID secret key in git 
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}     # set this to your AWS_SECRET_ACCESS_KEY secret key in git 
+        AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}             # set this to your AWS_SESSION_TOKEN secret key in git 
+        AWS_REGION: us-east-1
+        
+        
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REPOSITORY: ddogra1-lab1           # set this to your Amazon ECR repository name
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}                            
+        GIT_SHA: ${{ github.sha }}
+        
+      run: |
+        #### Build a docker container for Cats  push it to ECR
+        cd cats/
+        ls -ltra
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA .
+        ### Build a docker container for Dogs
+        cd ../dogs/
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA .
+        # Unit test
+        docker run -d -p 80:80 --name nodeapp_cats $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA
+        #docker run -d -p 8080:80 --name nodeapp $ECR_REGISTRY/$ECR_REPOSITORY:$CATS_GIT_SHA
+        docker ps
+        echo "Pause for 10 seconds to let container start"
+        sleep 10
+        curl localhost  -vvv         
+        docker run -d -p 8081:80 --name nodeapp_dogs $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA
+        docker ps
+        echo "Pause for 10 seconds to let container start"
+        sleep 10
+        curl localhost:8081 -vvv           
+       
+        #Pushing the Cats Docker Image to ECR
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA
+        #Pushing the Dogs Docker Image to ECR
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA
