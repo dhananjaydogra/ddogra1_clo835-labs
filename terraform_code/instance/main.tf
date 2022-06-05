@@ -48,7 +48,7 @@ module "globalvars" {
 #Fecthing an exisitng_profile of instance porfile name from list where s3 read policy has been manually added
 data "aws_iam_instance_profile" "exisitng_profile" {
   #name = var.iam_instance_profile_name
-  name= "EMR_EC2_DefaultRole"
+  name = "EMR_EC2_DefaultRole"
 }
 
 # Reference subnet provisioned by 01-Networking 
