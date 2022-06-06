@@ -5,6 +5,7 @@ RUN apt-get update -y && \
   apt-get install -y curl && \
   cd /tmp && \
   apt-get install awscli -y && \
+  apt-get install iputils-ping && \
   rm -rf /tmp/* && \
   rm -rf /var/lib/apt/lists/*
 COPY ./default.conf /etc/nginx/conf.d/default.conf
