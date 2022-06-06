@@ -1,8 +1,7 @@
 # ddogra1_clo835-lab1
 Lab1 for CLO835
 	
-	
-	
+		
 Readme  Steps  to implement :
 	
 1) Create three S3 bucket :ddogra1-clo835-labs 
