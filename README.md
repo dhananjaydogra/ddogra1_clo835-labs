@@ -5,7 +5,7 @@ Lab1 for CLO835
 	
 Readme  Steps  to implement :
 	
-1)  Create three S3 bucket :ddogra1-clo835-labs 
+1) Create three S3 bucket :ddogra1-clo835-labs 
 	   	
 		This value needs to be used in the below location:
 	   	ddogra1_clo835-lab1/terraform_code/instance/config.tf
@@ -18,12 +18,15 @@ Readme  Steps  to implement :
   Once done create a ssh key pairs 
 	a) path : ddogra1_clo835-lab1/terraform_code/instance/     key-name: lab1-dev
 		  
-3) Validate the value of iam_instance profile that should have a policy "AmazonEC2ContainerRegistryFullAccess",
-  If you can create one, then create add attach that policy or use an existing profile and update the role assoicated with it and add the above policy.
+3) Validate the value of iam_instance profile that should have a policy "AmazonEC2ContainerRegistryReadOnly",
+   If you can create one, then create add attach that policy or use an existing profile and update the role assoicated with it and add the above policy.
    Need to use the name of the User Role which has that policy and update the default value in the 
     	
 	variable "iam_instance_profile_name" 
 	present at location : ddogra1_clo835-lab1/terraform_code/instance/variables.tf
+ 
+4) Update the gitHub action secrets for AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_SESSION_TOKEN need to connect to AWS ECR.
+   
 	
 5) After that you need to deploy infrastructure in sequential order
    	use below commands at given location: ddogra1_clo835-lab1/terraform_code/instance/
