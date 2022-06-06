@@ -47,8 +47,8 @@ module "globalvars" {
 
 #Fecthing an exisitng_profile of instance porfile name from list where s3 read policy has been manually added
 data "aws_iam_instance_profile" "exisitng_profile" {
-  #name = var.iam_instance_profile_name
-  name = "EMR_EC2_DefaultRole"
+  name = var.iam_instance_profile_name
+  
 }
 
 # Reference subnet provisioned by 01-Networking 
@@ -123,16 +123,6 @@ resource "aws_security_group" "my_sg" {
     }
   )
 }
-
-# # Elastic IP
-# resource "aws_eip" "static_eip" {
-#   instance = aws_instance.dev_VM.id
-#   tags = merge(local.default_tags,
-#     {
-#       "Name" = "${local.name_prefix}-eip"
-#     }
-#   )
-# }
 
 
 resource "aws_ecr_repository" "ecr" {

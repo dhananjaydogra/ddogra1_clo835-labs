@@ -11,7 +11,6 @@ jobs:
   build:
     name: Build the Docker Image
     runs-on: ubuntu-latest
-   #environment: production
 
     steps:
     - name: Checkout
@@ -39,17 +38,20 @@ jobs:
         cd docker/cats/
         ls -ltra
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA .
+        
         ### Build a docker container for Dogs
         cd ../dogs/
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA .
-        # Unit test
-        docker run -d -p 80:80 --name nodeapp_cats $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA
-        #docker run -d -p 8080:80 --name nodeapp $ECR_REGISTRY/$ECR_REPOSITORY:$CATS_GIT_SHA
+        
+        # Unit test for cats docker images
+        docker run -d -p 8080:80 --name cats $ECR_REGISTRY/$ECR_REPOSITORY:$CATS_GIT_SHA
         docker ps
         echo "Pause for 10 seconds to let container start"
         sleep 10
-        curl localhost  -vvv         
-        docker run -d -p 8081:80 --name nodeapp_dogs $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA
+        curl localhost:8080  -vvv 
+        
+        # Unit test for dogs docker images
+        docker run -d -p 8081:80 --name dogs $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA
         docker ps
         echo "Pause for 10 seconds to let container start"
         sleep 10
@@ -57,5 +59,6 @@ jobs:
        
         #Pushing the Cats Docker Image to ECR
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA
+        
         #Pushing the Dogs Docker Image to ECR
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA
