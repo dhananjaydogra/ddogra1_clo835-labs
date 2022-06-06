@@ -44,7 +44,7 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA .
         
         # Unit test for cats docker images
-        docker run -d -p 8080:80 --name cats $ECR_REGISTRY/$ECR_REPOSITORY:$CATS_GIT_SHA
+        docker run -d -p 8080:80 --name cats $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA
         docker ps
         echo "Pause for 10 seconds to let container start"
         sleep 10
