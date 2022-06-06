@@ -79,21 +79,8 @@ TESTING
 		#Check if your containers are part of the new network:
 		docker network inspect mynet
 
-		docker exec -ti cats bash
-			From the Container: 
-				apt-get update
-				apt-get install iputils-ping
-				ping  dogs 
-				exit
-
-		docker exec -ti dogs bash
-			From the Container: 
-				apt-get update
-				apt-get install iputils-ping
-				ping  cats
-				exit
-
-		docker exec -ti cats ping dog
+		docker exec -ti cats ping dogs
+		docker exec -ti dogs ping cats
   
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
