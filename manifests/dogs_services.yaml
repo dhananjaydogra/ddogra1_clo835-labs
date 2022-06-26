@@ -9,10 +9,10 @@ spec:
   # an external load-balanced IP for the frontend service.
   type: NodePort
   ports:
-  - port: 9001
+  - port: 9000
     targetPort: 80
     # Optional field
     # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
-    nodePort: 30000
+    nodePort: 30001
   selector:
     app: dogs

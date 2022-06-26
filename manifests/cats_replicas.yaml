@@ -16,7 +16,7 @@ spec:
       name: cats-web
     spec:
       containers:
-      - image: 632981034191.dkr.ecr.us-east-1.amazonaws.com/ddogra1-labs-cats:CATS_7a9a86dc3d3d96c2ccd7603b867f59d23ba5a45e
+      - image: 632981034191.dkr.ecr.us-east-1.amazonaws.com/ddogra1-labs-cats:CATS_57e905a07a3a79ed780876d98c021486c87f7fe4
         name: cats
         resources: {}
         ports:
