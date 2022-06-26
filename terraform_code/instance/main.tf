@@ -48,7 +48,7 @@ module "globalvars" {
 #Fecthing an exisitng_profile of instance porfile name from list where s3 read policy has been manually added
 data "aws_iam_instance_profile" "exisitng_profile" {
   name = var.iam_instance_profile_name
-  
+
 }
 
 # Reference subnet provisioned by 01-Networking 
@@ -125,8 +125,8 @@ resource "aws_security_group" "my_sg" {
 }
 
 
-resource "aws_ecr_repository" "ecr" {
-  name                 = "ddogra1-lab1"
+resource "aws_ecr_repository" "ecr_cats" {
+  name                 = "dogra1-labs-cats"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
@@ -134,7 +134,21 @@ resource "aws_ecr_repository" "ecr" {
   }
   tags = merge(local.default_tags,
     {
-      "Name" = "${local.name_prefix}-Amazon-ECR"
+      "Name" = "${local.name_prefix}-Amazon-ECR-Cats"
+    }
+  )
+}
+
+resource "aws_ecr_repository" "ecr_dogs" {
+  name                 = "ddogra1-labs-dogs"
+  image_tag_mutability = "MUTABLE"
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+  tags = merge(local.default_tags,
+    {
+      "Name" = "${local.name_prefix}-Amazon-ECR-Dogs"
     }
   )
 }

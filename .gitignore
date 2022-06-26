@@ -29,4 +29,4 @@ override.tf.json
 # example: *tfplan*
 #
 # Adding to ignore the ssh file
-lab1-dev*
+labs-dev*
