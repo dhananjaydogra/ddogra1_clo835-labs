@@ -93,17 +93,17 @@ resource "aws_security_group" "my_sg" {
     ipv6_cidr_blocks = ["::/0"]
   }
   ingress {
-    description      = "8080 from everywhere"
-    from_port        = 8080
-    to_port          = 8080
+    description      = "30000 from everywhere"
+    from_port        = 30000
+    to_port          = 30000
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
   ingress {
-    description      = "8081 from everywhere"
-    from_port        = 8081
-    to_port          = 8081
+    description      = "30001 from everywhere"
+    from_port        = 30001
+    to_port          = 30001
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
@@ -126,7 +126,7 @@ resource "aws_security_group" "my_sg" {
 
 
 resource "aws_ecr_repository" "ecr_cats" {
-  name                 = "dogra1-labs-cats"
+  name                 = "ddogra1-labs-cats"
   image_tag_mutability = "MUTABLE"
 
   image_scanning_configuration {
