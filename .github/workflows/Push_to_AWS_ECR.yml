@@ -26,10 +26,10 @@ jobs:
         AWS_REGION: us-east-1
         
         
-    - name: Build, tag, and push image to Amazon ECR
-      id: build-image
+    - name: Build, test, and push Cats image to Amazon ECR
+      id: build-image-cats
       env:
-        ECR_REPOSITORY: ddogra1-lab1           # set this to your Amazon ECR repository name
+        ECR_REPOSITORY: ddogra1-labs-cats           # set this to your Amazon ECR repository name
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}                            
         GIT_SHA: ${{ github.sha }}
         
@@ -39,10 +39,6 @@ jobs:
         ls -ltra
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA .
         
-        ### Build a docker container for Dogs
-        cd ../dogs/
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA .
-        
         # Unit test for cats docker images
         docker run -d -p 8080:80 --name cats $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA
         docker ps
@@ -50,15 +46,29 @@ jobs:
         sleep 10
         curl localhost:8080  -vvv 
         
+       
+        #Pushing the Cats Docker Image to ECR
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA
+        
+        
+    - name: Build, test, and push  Dogs image to Amazon ECR
+      id: build-image-dogs
+      env:
+        ECR_REPOSITORY: ddogra1-labs-dogs           # set this to your Amazon ECR repository name
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}                            
+        GIT_SHA: ${{ github.sha }}
+        
+      run: |
+        ### Build a docker container for Dogs
+        cd ../dogs/
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA 
+        
         # Unit test for dogs docker images
         docker run -d -p 8081:80 --name dogs $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA
         docker ps
         echo "Pause for 10 seconds to let container start"
         sleep 10
         curl localhost:8081 -vvv           
-       
-        #Pushing the Cats Docker Image to ECR
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:CATS_$GIT_SHA
         
         #Pushing the Dogs Docker Image to ECR
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA
