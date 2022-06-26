@@ -61,7 +61,7 @@ jobs:
       run: |
         ### Build a docker container for Dogs
         cd docker/dogs/
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA 
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA .
         
         # Unit test for dogs docker images
         docker run -d -p 8081:80 --name dogs $ECR_REGISTRY/$ECR_REPOSITORY:DOGS_$GIT_SHA
