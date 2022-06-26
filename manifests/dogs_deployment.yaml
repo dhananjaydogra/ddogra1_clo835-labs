@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dogs-dep
+  name: dogs-web-deployment
+spec:
+  selector:
+    matchLabels:
+      app: dogs
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: dogs
+      name: dogs-web
+    spec:
+      containers:
+      - image: 632981034191.dkr.ecr.us-east-1.amazonaws.com/ddogra1-labs-dogs:DOGS_7a9a86dc3d3d96c2ccd7603b867f59d23ba5a45e
+        name: dogs
+        resources: {}
+        ports:
+          - containerPort: 80
